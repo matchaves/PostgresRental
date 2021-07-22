@@ -1,0 +1,43 @@
+- name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+  user:
+    name: vagrant
+    password: "{{ 'root123' | password_hash('sha512') }}"
+    comment: John Do
+    shell: /bin/bash
+    update_password: always
+    group: admin
+
+- name: basic packages
+  apt:
+    state: present
+    update_cache: yes
+    name:
+      - openssh-server
+
+- name: Configure sshd
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{item.key}}"
+    line: "{{item.key}} {{item.value}}"
+    state: present
+  loop:
+    - { key: "PermitRootLogin", value: "yes" }
+    - { key: "PasswordAuthentication", value: "yes" }
+- name: "Stop ssh"
+  service:
+    name: ssh
+    state: stopped
+- name: "Start ssh"
+  service:
+    name: ssh
+    state: started
+- name: set dns resolved.conf
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: '^#DNS='
+    line: DNS=192.168.0.200
+- name: set domain resolved.conf
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    regexp: '^#Domains='
+    line: Domains=colabdevops

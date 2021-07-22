@@ -1,0 +1,70 @@
+- name: Adicionando as chaves do repo apt do k8s
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+    
+
+- name: Adicionando o repo do k8s
+  apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main
+    state: present
+    filename: pgdg.list
+
+- name: Instalando os pacotes kubeadm, kubelet e kubectl
+  apt:
+    update_cache: yes
+    install_recommends: yes
+    name: 
+      - postgresql-12
+      - unzip
+      - python3-pip
+
+- name: install psycopg2-binary
+  pip:
+    name: psycopg2-binary
+    state: present
+
+- name: create database
+  command: createdb -O postgres dvdrental
+  become_user: postgres
+
+- name: "import dvdrental"
+  copy:
+    src: templates/dvdrental.zip
+    dest: /tmp/dvdrental.zip
+    owner: vagrant
+    group: admin
+    mode: 0777
+
+
+- name: Extract foo.tgz into /var/lib/foo
+  unarchive:
+    src: /tmp/dvdrental.zip
+    dest: /tmp
+    mode: 0777
+    remote_src: yes
+
+- name: create postgres database
+  postgresql_db:
+    name: dvdrental
+    target: /tmp/dvdrental.tar
+    state: restore
+  become_user: postgres
+  become: yes
+
+- name: "update /etc/bind/named.conf.local"
+  template:
+    src: pg_hba.conf
+    dest: /etc/postgresql/12/main/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: 0640
+
+- name: "update /etc/bind/named.conf.local"
+  template:
+    src: postgresql.conf
+    dest: /etc/postgresql/12/main/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: 0644
+  notify: Restart Postgresql
