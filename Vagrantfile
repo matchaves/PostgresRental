@@ -6,13 +6,15 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
+  
+    
   # The most common configuration options are documented and commented below.
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "generic/ubuntu1804"
   config.vm.hostname = "postgres.colabdevops.com.br"
   config.vm.define "postgres"
 
@@ -39,7 +41,12 @@ Vagrant.configure("2") do |config|
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
-  config.vm.network "public_network", bridge: "wlxd03745ab5d05", ip: "192.168.50.205"
+  #config.vm.network "public_network", bridge: "enp4s0", dev: "enp4s0"
+  #config.vm.network :public_network,
+  #    :dev => "virbr0",
+  #    :mode => "bridge",
+  #    :type => "bridge",
+  #    :ip => '192.168.121.30'
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
@@ -63,6 +70,17 @@ Vagrant.configure("2") do |config|
     vb.cpus = 2
     vb.memory = "2000"
      end
+
+  config.vm.provider :libvirt do |libvirt|
+
+    libvirt.driver = "kvm"
+    libvirt.connect_via_ssh = false
+    libvirt.username = "ubuntu"
+    libvirt.password = "root123"
+    libvirt.storage_pool_name = "default"
+    libvirt.management_network_mac = "5e:c0:28:e2:a4:f9"
+
+    end
   #
   # View the documentation for the provider you are using for more
   # information on available options.

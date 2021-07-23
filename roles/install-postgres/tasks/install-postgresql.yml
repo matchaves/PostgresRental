@@ -15,13 +15,18 @@
     update_cache: yes
     install_recommends: yes
     name: 
+      - python-setuptools
+      - libpq-dev 
+      - python3-dev
       - postgresql-12
       - unzip
       - python3-pip
+      - build-essential
+      - python3-psycopg2
 
 - name: install psycopg2-binary
   pip:
-    name: psycopg2-binary
+    name: psycopg2
     state: present
 
 - name: create database
@@ -33,7 +38,7 @@
     src: templates/dvdrental.zip
     dest: /tmp/dvdrental.zip
     owner: vagrant
-    group: admin
+    group: adm
     mode: 0777
 
 

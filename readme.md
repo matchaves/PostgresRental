@@ -34,3 +34,8 @@ sudo service postgresql restart
 ALTER USER postgres WITH PASSWORD 'root123';
 
 pg_restore -h localhost -p 5432 -U postgres --dbname=dvdrental --verbose /tmp/dvdrental.tar
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+setar ip libvirt vagrant
+
+virsh net-update vagrant-libvirt add-last ip-dhcp-host '<host mac="5e:c0:28:e2:a4:f9" ip="192.168.121.110"/>' --live --config --parent-index 0
