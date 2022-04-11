@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu1804"
   config.vm.hostname = "postgres.colabdevops.com.br"
   config.vm.define "postgres"
-
+  config.vm.network :public_network, bridge: "wlp6s0", ip: "192.168.50.210"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -27,41 +27,7 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "playbook.yml"
   end
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # NOTE: This will enable public access to the opened port
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine and only allow access
-  # via 127.0.0.1 to disable public access
-  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
-  #config.vm.network "public_network", bridge: "enp4s0", dev: "enp4s0"
-  #config.vm.network :public_network,
-  #    :dev => "virbr0",
-  #    :mode => "bridge",
-  #    :type => "bridge",
-  #    :ip => '192.168.121.30'
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
-
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
-
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
+  
   config.vm.provider "virtualbox" do |vb|
     #   # Display the VirtualBox GUI when booting the machine
     #   vb.gui = true
@@ -71,16 +37,14 @@ Vagrant.configure("2") do |config|
     vb.memory = "2000"
      end
 
-  config.vm.provider :libvirt do |libvirt|
-
-    libvirt.driver = "kvm"
-    libvirt.connect_via_ssh = false
-    libvirt.username = "ubuntu"
-    libvirt.password = "root123"
-    libvirt.storage_pool_name = "default"
-    libvirt.management_network_mac = "5e:c0:28:e2:a4:f9"
-
-    end
+    #config.vm.provider :libvirt do |libvirt|
+    #  libvirt.driver = "kvm"
+    #  libvirt.connect_via_ssh = false
+    #  libvirt.username = "ubuntu"
+    #  libvirt.password = "root123"
+    #  libvirt.storage_pool_name = "default"
+    #  libvirt.management_network_mac = "5e:c0:28:e2:a4:f9"
+    #end
   #
   # View the documentation for the provider you are using for more
   # information on available options.

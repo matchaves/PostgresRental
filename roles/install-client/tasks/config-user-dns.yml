@@ -5,7 +5,7 @@
     comment: John Do
     shell: /bin/bash
     update_password: always
-    group: adm
+    groups: adm,sudo
 
 - name: basic packages
   apt:

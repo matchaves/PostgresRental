@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    container_name: pg_container
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: post123
+      POSTGRES_DB: dvdrental
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/devops/Workspaces/PostgresRental/docker/:/docker-entrypoint-initdb.d/
