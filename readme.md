@@ -39,3 +39,12 @@ pg_restore -h localhost -p 5432 -U postgres --dbname=dvdrental --verbose /tmp/dv
 setar ip libvirt vagrant
 
 virsh net-update vagrant-libvirt add-last ip-dhcp-host '<host mac="5e:c0:28:e2:a4:f9" ip="192.168.121.110"/>' --live --config --parent-index 0
+
+systemctl stop libvirtd
+
+sudo systemctl start libvirtd
+
+sudo systemctl restart network-manager.service
+
+## caminho para setar a config network mac ip
+/etc/libvirt/qemu/networks/
