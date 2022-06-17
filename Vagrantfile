@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/bionic64"
   config.vm.hostname = "postgres.colabdevops.com.br"
   config.vm.define "postgres"
-  config.vm.network :public_network, bridge: "wlp6s0", ip: "192.168.50.200"
+  config.vm.network :public_network, bridge: "wlp8s0", ip: "192.168.50.200"
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
